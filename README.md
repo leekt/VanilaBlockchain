@@ -28,5 +28,5 @@ compile env : go 1.9.0
 
 ## What we need to do
 
-[] Choose how to mine
-[] Set mining reward
+- [  ] Choose how to mine
+- [  ] Set mining reward
