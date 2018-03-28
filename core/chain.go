@@ -99,7 +99,7 @@ func (bc *Blockchain) VerifyTransaction(tx *Transaction) bool {
 func NewBlockchain(nodeID string) *Blockchain {
 	dbFile := fmt.Sprintf(dbFile, nodeID)
 	if dbExists(dbFile) == false {
-		fmt.Println("No existing blockchain foung. Create one first.")
+		fmt.Println("No existing blockchain found. Create one first.")
 		os.Exit(1)
 	}
 

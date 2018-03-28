@@ -1,7 +1,7 @@
 package core
 
 import (
-	"ANET-chain/utils"
+	"ScamList/utils"
 	"bytes"
 	"math/big"
 )
