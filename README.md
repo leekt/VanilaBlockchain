@@ -1,28 +1,32 @@
-# ANET-chain
-ANET main chain
+# Scam List Blockchain
+made by scam members of decipher
 
 ## Skip list Blockchain
+adapt skip list structure to blockchain
+
+block level is set by block hash
 
 ### Skip list
 
+- add some description here
+
 ### Blockchain
 
-### Skip list Blockchain(Skip-Chain)
+- add some description here
 
 ### Mining Skip-Chain
 
-## Side Chain
+여기가 존나 골때림 마이닝을 어떻게 할건지 구상 필요
 
-### Ethereum
+# Project details
 
-### EVM
+## What we did
 
-### Side Chaining
+toy code for vanila blockchain
 
-## Mining Pool
+compile env : go 1.9.0
 
-### Reward Distribution
+## What we need to do
 
-## PoT(Proof of Time)
-
-### Proof of Human Work (PoH)
+[  ] Choose how to mine
+[  ] Set mining reward
