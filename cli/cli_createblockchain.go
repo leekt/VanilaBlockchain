@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"ANET-chain/core"
+	"ScamList/core"
 	"fmt"
 	"log"
 )

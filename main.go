@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ANET-chain/cli"
+	"ScamList/cli"
 	//	"ANET-chain/core"
 )
 
