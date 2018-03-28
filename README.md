@@ -36,7 +36,7 @@ compile env : go 1.9.0
 - [Github](https://github.com/Jeiwan/blockchain_go/)
 - [go mining](https://medium.com/@mycoralhealth/code-your-own-blockchain-mining-algorithm-in-go-82c6a71aba1f)
 - [go lang 200 line blockchain](https://medium.com/@mycoralhealth/code-your-own-blockchain-in-less-than-200-lines-of-go-e296282bcffc)
-
+- [go lang 200 line blockchain-network](https://medium.com/@mycoralhealth/part-2-networking-code-your-own-blockchain-in-less-than-200-lines-of-go-17fe1dad46e1)
 # Further Studies
 ## Blockchain
 - [go lang proof of stake](https://medium.com/@mycoralhealth/code-your-own-proof-of-stake-blockchain-in-go-610cd99aa658)
