@@ -245,7 +245,12 @@ func (bc *Blockchain) FindUTXO() map[string]TXOutputs {
 					inTxID := hex.EncodeToString(in.Txid)
 					spentTXOs[inTxID] = append(spentTXOs[inTxID], in.Vout)
 				}
+
 			}
+
+		}
+		if len(block.PrevBlockHash) == 0 {
+			break
 		}
 	}
 
