@@ -23,7 +23,6 @@ func (cli *CLI) Send(from, to string, amount int, nodeID string, mineNow bool) {
 		log.Panic(err)
 	}
 	wallet := wallets.GetWallet(from)
-
 	tx := core.NewUTXOTransaction(&wallet, to, amount, &UTXOSet)
 
 	if mineNow {
