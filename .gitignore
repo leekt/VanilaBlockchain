@@ -1,3 +1,5 @@
 ScamList
 *.db
 *.dat
+*.sh
+

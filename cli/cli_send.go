@@ -2,7 +2,6 @@ package cli
 
 import (
 	"ScamList/core"
-	"fmt"
 	"log"
 )
 
@@ -23,17 +22,16 @@ func (cli *CLI) Send(from, to string, amount int, nodeID string, mineNow bool) {
 		log.Panic(err)
 	}
 	wallet := wallets.GetWallet(from)
+
 	tx := core.NewUTXOTransaction(&wallet, to, amount, &UTXOSet)
 
 	if mineNow {
 		cbTx := core.NewCoinbaseTX(from, "")
 		txs := []*core.Transaction{cbTx, tx}
-
 		newBlock := bc.MineBlock(txs)
 		UTXOSet.Update(newBlock)
 	} else {
 		core.SendTx(core.KnownNodes[0], tx)
 	}
 
-	fmt.Println("Success!")
 }

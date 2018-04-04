@@ -16,6 +16,7 @@ const dbFile = "blockchain_%s.db"
 const blocksBucket = "blocks"
 const genesisCoinbaseData = "GENESIS"
 
+//Blockchain struct
 type Blockchain struct {
 	Tip []byte
 	Db  *bolt.DB
@@ -32,7 +33,7 @@ func dbExists(dbFile string) bool {
 func (bc *Blockchain) MineBlock(transactions []*Transaction) *Block {
 	var lastHash []byte
 	var lastHeight int
-
+	/*TODO blank transaction*/
 	for _, tx := range transactions {
 		if bc.VerifyTransaction(tx) != true {
 			log.Panic("ERROR : invalid transaction!")
@@ -135,15 +136,16 @@ func CreateBlockchain(address, nodeID string) *Blockchain {
 	}
 
 	var tip []byte
+
+	cbtx := NewCoinbaseTX(address, genesisCoinbaseData)
+	genesis := NewGenesisBlock(cbtx)
+
 	db, err := bolt.Open(dbFile, 0600, nil)
 	if err != nil {
 		log.Panic(err)
 	}
-	err = db.Update(func(tx *bolt.Tx) error {
-		cbtx := NewCoinbaseTX(address, genesisCoinbaseData)
-		genesis := NewGenesisBlock(cbtx)
 
-		b := tx.Bucket([]byte(blocksBucket))
+	err = db.Update(func(tx *bolt.Tx) error {
 
 		b, err := tx.CreateBucket([]byte(blocksBucket))
 		if err != nil {
@@ -259,13 +261,12 @@ func (bc *Blockchain) FindUTXO() map[string]TXOutputs {
 
 func (bc *Blockchain) SignTransaction(tx *Transaction, privkey ecdsa.PrivateKey) {
 	prevTXs := make(map[string]Transaction)
-
 	for _, vin := range tx.Vin {
 		prevTX, err := bc.FindTransaction(vin.Txid)
 		if err != nil {
 			log.Panic(err)
 		}
-		prevTXs[hex.EncodeToString(vin.Txid)] = prevTX
+		prevTXs[hex.EncodeToString(prevTX.ID)] = prevTX
 	}
 
 	tx.Sign(privkey, prevTXs)
@@ -273,7 +274,6 @@ func (bc *Blockchain) SignTransaction(tx *Transaction, privkey ecdsa.PrivateKey)
 
 func (bc *Blockchain) FindTransaction(ID []byte) (Transaction, error) {
 	bci := bc.Iterator()
-
 	for {
 		block := bci.Next()
 

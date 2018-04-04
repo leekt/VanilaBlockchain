@@ -164,11 +164,9 @@ func (u UTXOSet) Update(block *Block) {
 			}
 
 			newOutputs := TXOutputs{}
-
 			for _, out := range tx.Vout {
 				newOutputs.Outputs = append(newOutputs.Outputs, out)
 			}
-
 			err := b.Put(tx.ID, newOutputs.Serialize())
 			if err != nil {
 				log.Panic(err)

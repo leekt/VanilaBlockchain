@@ -69,7 +69,7 @@ func (tx *Transaction) Hash() []byte {
 	return hash[:]
 }
 
-//this method takes a private key and a map of previous tansactions
+//Sign method takes a private key and a map of previous tansactions
 func (tx *Transaction) Sign(privKey ecdsa.PrivateKey, prevTXs map[string]Transaction) {
 	if tx.IsCoinbase() {
 		return
@@ -215,7 +215,7 @@ func NewUTXOTransaction(wallet *Wallet, to string, amount int, UTXOSet *UTXOSet)
 	}
 
 	tx := Transaction{nil, inputs, outputs}
-	tx.Hash()
+	tx.ID = tx.Hash()
 	UTXOSet.Blockchain.SignTransaction(&tx, wallet.PrivateKey)
 
 	return &tx
