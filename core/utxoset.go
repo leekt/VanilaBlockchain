@@ -9,10 +9,12 @@ import (
 
 const utxoBucket = "chainstate"
 
+// UTXOSet
 type UTXOSet struct {
 	Blockchain *Blockchain
 }
 
+// Reindex
 func (u UTXOSet) Reindex() {
 	db := u.Blockchain.Db
 
@@ -54,6 +56,7 @@ func (u UTXOSet) Reindex() {
 	})
 }
 
+//FindSpendableOutputs
 func (u UTXOSet) FindSpendableOutputs(pubKeyHash []byte, amount int) (int, map[string][]int) {
 	unspentOutputs := make(map[string][]int)
 	accumulated := 0
@@ -84,6 +87,7 @@ func (u UTXOSet) FindSpendableOutputs(pubKeyHash []byte, amount int) (int, map[s
 	return accumulated, unspentOutputs
 }
 
+// FindUTXO
 func (u UTXOSet) FindUTXO(pubKeyHash []byte) []TXOutput {
 	var UTXOs []TXOutput
 	db := u.Blockchain.Db
@@ -110,6 +114,7 @@ func (u UTXOSet) FindUTXO(pubKeyHash []byte) []TXOutput {
 	return UTXOs
 }
 
+// CountTransactions
 func (u UTXOSet) CountTransactions() int {
 	db := u.Blockchain.Db
 	counter := 0
@@ -130,6 +135,7 @@ func (u UTXOSet) CountTransactions() int {
 	return counter
 }
 
+// Update
 func (u UTXOSet) Update(block *Block) {
 	db := u.Blockchain.Db
 
