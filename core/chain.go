@@ -275,7 +275,6 @@ func (bc *Blockchain) FindTransaction(ID []byte) (Transaction, error) {
 	bci := bc.Iterator()
 	for {
 		block := bci.Next()
-
 		for _, tx := range block.Transactions {
 			if bytes.Compare(tx.ID, ID) == 0 {
 				return *tx, nil
@@ -285,9 +284,8 @@ func (bc *Blockchain) FindTransaction(ID []byte) (Transaction, error) {
 				break
 			}
 		}
-
-		return Transaction{}, errors.New("Transaction Not Found")
 	}
+	return Transaction{}, errors.New("Transaction Not Found")
 }
 
 func (bc *Blockchain) AddBlock(block *Block) {
