@@ -251,6 +251,7 @@ func handleInv(request []byte, bc *Blockchain) {
 	}
 }
 
+//handelGetBlocks send blocks
 func handleGetBlocks(request []byte, bc *Blockchain) {
 	var buff bytes.Buffer
 	var payload getblocks

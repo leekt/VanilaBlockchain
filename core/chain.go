@@ -375,12 +375,31 @@ func (bc *Blockchain) GetBlock(blockHash []byte) (Block, error) {
 	return block, nil
 }
 
+//GetBlockHashes return all block hashes
 func (bc *Blockchain) GetBlockHashes() [][]byte {
 	var blocks [][]byte
 	bci := bc.Iterator()
 
 	for {
 		block := bci.Next()
+
+		blocks = append(blocks, block.Hash)
+
+		if len(block.PrevBlockHash) == 0 {
+			break
+		}
+	}
+
+	return blocks
+}
+
+//GetBlockHashes2 return minimum block hashes
+func (bc *Blockchain) GetBlockHashes2() [][]byte {
+	var blocks [][]byte
+	bci := bc.Iterator()
+	//Uses Next2 for iteration
+	for {
+		block := bci.Next2()
 
 		blocks = append(blocks, block.Hash)
 
