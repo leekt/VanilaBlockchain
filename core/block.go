@@ -11,16 +11,18 @@ import (
 
 // Block Struct for SkipList LV_2
 type Block struct {
-	Timestamp     int64
-	Transactions  []*Transaction
-	PrevBlockHash []byte
-	Hash          []byte
-	Nonce         int
-	Height        int
+	Timestamp      int64
+	Transactions   []*Transaction
+	PrevBlockHash  []byte
+	PrevBlockHash2 []byte
+	Hash           []byte
+	Nonce          int
+	Height         int
 }
 
-func NewBlock(transactions []*Transaction, prevBlockHash []byte, height int) *Block {
-	block := &Block{time.Now().Unix(), transactions, prevBlockHash, []byte{}, 0, height}
+// NewBlock for SkipList
+func NewBlock(transactions []*Transaction, prevBlockHash []byte, prevBlockHash2 []byte, height int) *Block {
+	block := &Block{time.Now().Unix(), transactions, prevBlockHash, prevBlockHash2, []byte{}, 0, height}
 	pow := NewProofOfWork(block)
 	nonce, hash := pow.Run()
 
@@ -30,10 +32,12 @@ func NewBlock(transactions []*Transaction, prevBlockHash []byte, height int) *Bl
 	return block
 }
 
+// NewGenesisBlock for SkipList
 func NewGenesisBlock(coinbase *Transaction) *Block {
-	return NewBlock([]*Transaction{coinbase}, []byte{}, 0)
+	return NewBlock([]*Transaction{coinbase}, []byte{}, []byte{}, 0)
 }
 
+// SetHash for SkipList
 func (b *Block) SetHash() {
 	timestamp := []byte(strconv.FormatInt(b.Timestamp, 10))
 	headers := bytes.Join([][]byte{b.PrevBlockHash, b.HashTransactions(), timestamp}, []byte{})

@@ -18,6 +18,7 @@ func (cli *CLI) PrintChain(nodeID string) {
 		fmt.Printf("============ Block %x ============\n", block.Hash)
 		fmt.Printf("Height: %d\n", block.Height)
 		fmt.Printf("Prev. block : %x\n", block.PrevBlockHash)
+		fmt.Printf("Prev. block2: %x\n", block.PrevBlockHash2)
 		pow := core.NewProofOfWork(block)
 		fmt.Printf("PoW: %s\n\n", strconv.FormatBool(pow.Validate()))
 		for _, tx := range block.Transactions {

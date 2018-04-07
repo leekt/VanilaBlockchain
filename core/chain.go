@@ -29,8 +29,10 @@ func dbExists(dbFile string) bool {
 	return true
 }
 
+//MineBlock for level2
 func (bc *Blockchain) MineBlock(transactions []*Transaction) *Block {
 	var lastHash []byte
+	var lastHash2 []byte
 	var lastHeight int
 	for _, tx := range transactions {
 		if bc.VerifyTransaction(tx) != true {
@@ -46,6 +48,11 @@ func (bc *Blockchain) MineBlock(transactions []*Transaction) *Block {
 		block := DeserializeBlock(blockData)
 
 		lastHeight = block.Height
+		//get prev prev block hash if odd
+		if lastHeight%2 == 1 {
+			lastHash2 = b.Get([]byte("l2"))
+			fmt.Printf("last Hash 2 : %x\n", lastHash2)
+		}
 
 		return nil
 	})
@@ -54,7 +61,7 @@ func (bc *Blockchain) MineBlock(transactions []*Transaction) *Block {
 		log.Panic(err)
 	}
 
-	newBlock := NewBlock(transactions, lastHash, lastHeight+1)
+	newBlock := NewBlock(transactions, lastHash, lastHash2, lastHeight+1)
 	// Update last block hash by key : value type db
 	err = bc.Db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(blocksBucket))
@@ -65,6 +72,13 @@ func (bc *Blockchain) MineBlock(transactions []*Transaction) *Block {
 		err = b.Put([]byte("l"), newBlock.Hash)
 		if err != nil {
 			log.Panic(err)
+		}
+		//Added l2 key for prev key
+		if lastHeight%2 == 1 {
+			err = b.Put([]byte("l2"), lastHash)
+			if err != nil {
+				log.Panic(err)
+			}
 		}
 		bc.Tip = newBlock.Hash
 
