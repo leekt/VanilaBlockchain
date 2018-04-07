@@ -16,18 +16,30 @@ type Block struct {
 	PrevBlockHash  []byte
 	PrevBlockHash2 []byte
 	Hash           []byte
+	Hash2          []byte
 	Nonce          int
+	Nonce2         int
 	Height         int
 }
 
 // NewBlock for SkipList
 func NewBlock(transactions []*Transaction, prevBlockHash []byte, prevBlockHash2 []byte, height int) *Block {
-	block := &Block{time.Now().Unix(), transactions, prevBlockHash, prevBlockHash2, []byte{}, 0, height}
+	block := &Block{time.Now().Unix(), transactions, prevBlockHash, prevBlockHash2, []byte{}, []byte{}, 0, 0, height}
 	pow := NewProofOfWork(block)
 	nonce, hash := pow.Run()
 
 	block.Hash = hash[:]
 	block.Nonce = nonce
+	// final block nonce calc
+	if height%2 == 0 {
+		nonce2, hash2 := pow.Run_final()
+
+		block.Hash2 = hash2[:]
+		block.Nonce2 = nonce2
+	} else {
+		block.Hash2 = hash[:]
+		block.Nonce2 = nonce
+	}
 
 	return block
 }

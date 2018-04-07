@@ -41,6 +41,21 @@ func (pow *ProofOfWork) prepareData(nonce int) []byte {
 	return data
 }
 
+func (pow *ProofOfWork) prepareData_final(nonce int) []byte {
+	data := bytes.Join(
+		[][]byte{pow.block.PrevBlockHash,
+			pow.block.PrevBlockHash2,
+			pow.block.HashTransactions(),
+			utils.IntToHex(pow.block.Timestamp),
+			utils.IntToHex(int64(targetBits)),
+			utils.IntToHex(int64(pow.block.Nonce)),
+			utils.IntToHex(int64(nonce)),
+		},
+		[]byte{},
+	)
+	return data
+}
+
 func (pow *ProofOfWork) Run() (int, []byte) {
 	var hashInt big.Int
 	var hash [32]byte
@@ -61,15 +76,38 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 		}
 
 	}
-
 	fmt.Printf("\n\n")
 	return nonce, hash[:]
 }
+func (pow *ProofOfWork) Run_final() (int, []byte) {
+	var hashInt2 big.Int
+	var hash2 [32]byte
+	nonce2 := 0
+	//calculate nonce final
 
+	fmt.Println("Hash for level FINAL")
+	for nonce2 < maxNonce {
+		data := pow.prepareData_final(nonce2)
+		hash2 = sha256.Sum256(data)
+		fmt.Printf("\r%x", hash2)
+		hashInt2.SetBytes(hash2[:])
+
+		if hashInt2.Cmp(pow.target) == -1 {
+			break
+		} else {
+			nonce2++
+		}
+
+	}
+	fmt.Printf("\n\n")
+	return nonce2, hash2[:]
+}
+
+//Validate for SkipList using final Nonce
 func (pow *ProofOfWork) Validate() bool {
 	var hashInt big.Int
 
-	data := pow.prepareData(pow.block.Nonce)
+	data := pow.prepareData_final(pow.block.Nonce2)
 	hash := sha256.Sum256(data)
 	hashInt.SetBytes(hash[:])
 

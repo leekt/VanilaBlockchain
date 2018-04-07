@@ -16,6 +16,7 @@ func (cli *CLI) PrintChain(nodeID string) {
 		block := bci.Next()
 
 		fmt.Printf("============ Block %x ============\n", block.Hash)
+		fmt.Printf("============ Block %x ============\n", block.Hash2)
 		fmt.Printf("Height: %d\n", block.Height)
 		fmt.Printf("Prev. block : %x\n", block.PrevBlockHash)
 		fmt.Printf("Prev. block2: %x\n", block.PrevBlockHash2)
