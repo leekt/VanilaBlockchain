@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// Block Struct for SkipList LV_2
 type Block struct {
 	Timestamp     int64
 	Transactions  []*Transaction
@@ -53,7 +54,7 @@ func (b *Block) HashTransactions() []byte {
 	return mTree.RootNode.Data
 }
 
-// Byte Perfect Consistency
+// Serialize Byte Perfect Consistency
 func (b *Block) Serialize() []byte {
 	var result bytes.Buffer
 	encoder := gob.NewEncoder(&result)
@@ -67,6 +68,7 @@ func (b *Block) Serialize() []byte {
 	return result.Bytes()
 }
 
+// DeserializeBlock Decode Block
 func DeserializeBlock(d []byte) *Block {
 	var block Block
 

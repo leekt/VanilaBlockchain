@@ -32,12 +32,12 @@ func dbExists(dbFile string) bool {
 func (bc *Blockchain) MineBlock(transactions []*Transaction) *Block {
 	var lastHash []byte
 	var lastHeight int
-	/*TODO blank transaction*/
 	for _, tx := range transactions {
 		if bc.VerifyTransaction(tx) != true {
 			log.Panic("ERROR : invalid transaction!")
 		}
 	}
+	// Get last block hash using "l" key
 	err := bc.Db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(blocksBucket))
 		lastHash = b.Get([]byte("l"))
@@ -55,7 +55,7 @@ func (bc *Blockchain) MineBlock(transactions []*Transaction) *Block {
 	}
 
 	newBlock := NewBlock(transactions, lastHash, lastHeight+1)
-
+	// Update last block hash by key : value type db
 	err = bc.Db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(blocksBucket))
 		err := b.Put(newBlock.Hash, newBlock.Serialize())
@@ -279,7 +279,6 @@ func (bc *Blockchain) FindTransaction(ID []byte) (Transaction, error) {
 			if bytes.Compare(tx.ID, ID) == 0 {
 				return *tx, nil
 			}
-
 			if len(block.PrevBlockHash) == 0 {
 				break
 			}
