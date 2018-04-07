@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"time"
 )
-
+//prepare for skip list blockchain
 type Block struct {
 	Timestamp     int64
 	Transactions  []*Transaction
